@@ -25,36 +25,47 @@ public class AVL_Tree {
         if (this.raiz == null) {
             this.raiz = nodoNuevo;
         } else {
-            BooleanWrapper esMayor = new BooleanWrapper(false);
-            this.raiz = addAVL_Node(this.raiz, nodoNuevo, esMayor);
+            ResultadoInsercion resultado = addAVL_Node(this.raiz, nodoNuevo);
+            this.raiz = resultado.nodo;
         }
     }
 
-    private AVL_Node addAVL_Node(AVL_Node raiz, AVL_Node nodoNuevo, BooleanWrapper esMayor) {
+    private ResultadoInsercion addAVL_Node(AVL_Node raiz, AVL_Node nodoNuevo) {
         if (raiz == null) {
-            esMayor.value = true;
-            return nodoNuevo;
-        } 
+            return new ResultadoInsercion(nodoNuevo, true);
+        }
+
+        boolean esMayor = false;
+
         if (nodoNuevo.val < raiz.val) {
-            raiz.izq = addAVL_Node(raiz.izq, nodoNuevo, esMayor);
-            if (esMayor.value) {
+            ResultadoInsercion resultadoIzq = addAVL_Node(raiz.izq, nodoNuevo);
+            raiz.izq = resultadoIzq.nodo;
+            esMayor = resultadoIzq.esMayor;
+
+            if (esMayor) {
                 raiz.FE--;
-                raiz = balancear(raiz, esMayor);
+                raiz = balancear(raiz);
+                esMayor = (raiz.FE != 0);
             }
         } else if (nodoNuevo.val > raiz.val) {
-            raiz.der = addAVL_Node(raiz.der, nodoNuevo, esMayor);
-            if (esMayor.value) {
+            ResultadoInsercion resultadoDer = addAVL_Node(raiz.der, nodoNuevo);
+            raiz.der = resultadoDer.nodo;
+            esMayor = resultadoDer.esMayor;
+
+            if (esMayor) {
                 raiz.FE++;
-                raiz = balancear(raiz, esMayor);
+                raiz = balancear(raiz);
+                esMayor = (raiz.FE != 0);
             }
         } else {
             System.out.println("No se pueden tener nodos repetidos");
-            esMayor.value = false;
+            esMayor = false;
         }
-        return raiz;
+
+        return new ResultadoInsercion(raiz, esMayor);
     }
 
-    private AVL_Node balancear(AVL_Node raiz, BooleanWrapper esMayor) {
+    private AVL_Node balancear(AVL_Node raiz) {
         if (raiz.FE < -1) {
             if (raiz.izq.FE <= 0) { // Rotación derecha
                 raiz = rotarDer(raiz);
@@ -62,7 +73,6 @@ public class AVL_Tree {
                 raiz.izq = rotarIzq(raiz.izq);
                 raiz = rotarDer(raiz);
             }
-            esMayor.value = false;
         } else if (raiz.FE > 1) {
             if (raiz.der.FE >= 0) { // Rotación izquierda
                 raiz = rotarIzq(raiz);
@@ -70,7 +80,6 @@ public class AVL_Tree {
                 raiz.der = rotarDer(raiz.der);
                 raiz = rotarIzq(raiz);
             }
-            esMayor.value = false;
         }
         return raiz;
     }
@@ -95,10 +104,14 @@ public class AVL_Tree {
         return hijoizq;
     }
 
-    private class BooleanWrapper {
-        boolean value;
-        BooleanWrapper(boolean value) {
-            this.value = value;
+    // Clase auxiliar para almacenar el nodo y el estado de balanceo
+    private class ResultadoInsercion {
+        AVL_Node nodo;
+        boolean esMayor;
+
+        ResultadoInsercion(AVL_Node nodo, boolean esMayor) {
+            this.nodo = nodo;
+            this.esMayor = esMayor;
         }
     }
 }
