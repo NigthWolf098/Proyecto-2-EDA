@@ -1,21 +1,60 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package arbolesBinarios.operaconesAritmericas;
+
+import java.util.Scanner;
 
 public class Pruebas {
+    private static Scanner sc = new Scanner(System.in);
+    
     public static void main(String[] args) {
-        AVL_Node n1 = new AVL_Node(10);
-        AVL_Node n2 = new AVL_Node(8);
-        AVL_Node n3 = new AVL_Node(6);
-        AVL_Node n4 = new AVL_Node(5);
-        AVL_Node n5 = new AVL_Node(4);
-        AVL_Node n6 = new AVL_Node(12);
-        AVL_Node n7 = new AVL_Node(13);
-        AVL_Tree arbol = new AVL_Tree();
-        arbol.addAVL_Node(n1);
-        arbol.addAVL_Node(n2);
-        arbol.addAVL_Node(n3);
-        arbol.addAVL_Node(n4);
-        arbol.addAVL_Node(n5);
-        arbol.addAVL_Node(n6);
-        arbol.addAVL_Node(n7);
-        arbol.BFS();
+        
+        ArbolOpAritmeticas tree = new ArbolOpAritmeticas();
+        String op = sc.nextLine();
+        tree.crearArbol(op);
+        
+        
+        System.out.println("El recorrido es: ");
+        tree.BFS();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+//        //Esto para filtar el contenido del string recibido
+//        String p;
+//        System.out.println("Ingrese una operación");
+//        p = sc.nextLine();
+//        StringBuilder t2 = new StringBuilder(p);
+//              
+//        for(int i = t2.length()-1; i >= 0; i--){
+//            if(t2.charAt(i) == ')' || '(' == t2.charAt(i) || t2.charAt(i) == ' '){
+//                System.out.println("Se ha borrado: " + t2.charAt(i));
+//                t2.deleteCharAt(i);
+//            }
+//        }
+//        System.out.println(t2.toString());
+//        //Fin filtro
+//        
+//        
+//        /*Establecer mas jerarquía sería ^
+//                            luego *, /
+//                            luego -.+
+//        */
+//        
+        
+        
+        
+        
+        
+
+        
+        
     }
 }
