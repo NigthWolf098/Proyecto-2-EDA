@@ -16,7 +16,36 @@ public class MenuUsuario {
         switch(opcion){
         
             case '1' :
-                
+                AVL_Tree arbol = new AVL_Tree();
+                int op = 0;
+                while(op != 5){
+                    System.out.println("Qué accion quieres realizar?\n1) Agregar un valor\n2) Eliminar un valor\n3) Buscar un valor\n4) Mostrar Arbol\n5) Salir");
+                    op = scanner.nextInt();
+                    switch(op){
+                        case 1 :
+                            System.out.println("Dame el numero a agregar");
+                            AVL_Node nodo = new AVL_Node(scanner.nextInt());
+                            arbol.addVAVL_Node(nodo);
+                            break;
+                        case 2 :
+                            System.out.println("Dame el numero a eliminar");
+                            arbol.eliminar(scanner.nextInt());
+                            break;
+                        case 3 :
+                            System.out.println("Dame el numero a buscar");
+                            if(arbol.busqueda(scanner.nextInt()))
+                                System.out.println("Se ha encontrado el valor en el arbol");
+                            else
+                                System.out.println("El arbol no tiene ese nodo");
+                            break;
+                        case 4 :
+                            arbol.BFS();
+                            break;
+                        case 5 :
+                            op = 5;
+                            break;
+                    }
+                }
                 break;
             
             case '2' :
