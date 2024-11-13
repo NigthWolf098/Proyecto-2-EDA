@@ -134,23 +134,19 @@ public class AVL_Tree {
     return raiz;
     }
     
-    public boolean busqueda (int val){
-        AVL_Node r = this.raiz;
-	Queue<AVL_Node> queue = new LinkedList();
-	if(r!=null){
-            queue.add(r);
-            while(!queue.isEmpty()){
-                r = (AVL_Node)queue.poll();
-		if(val == r.val){
-                    return true;
-                }             
-		if(r.izq!=null)
-                    queue.add(r.izq);
-		if(r.der!=null)
-		queue.add(r.der);
+    public boolean busqueda(int val) {
+        AVL_Node r = this.raiz; // Comienza desde la raíz
+
+        while (r != null) { // Mientras haya nodos para revisar
+            if (val == r.val) {
+                return true; // El valor ha sido encontrado
+            } else if (val < r.val) {
+                r = r.izq; // Ir al subárbol izquierdo si el valor es menor
+            } else {
+                r = r.der; // Ir al subárbol derecho si el valor es mayor
             }
-	}
-        return false;
+        }
+    return false; // El valor no fue encontrado en el árbol
     }
     
     private AVL_Node obtenerMin(AVL_Node nodo) {
