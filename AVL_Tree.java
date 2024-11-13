@@ -8,19 +8,6 @@ public class AVL_Tree {
         this.raiz = null;
     }
 
-    public void BFS() {
-        Queue<AVL_Node> queue = new LinkedList<>();
-        if (this.raiz != null) {
-            queue.add(this.raiz);
-            while (!queue.isEmpty()) {
-                AVL_Node nodo = queue.poll();
-                System.out.println(nodo.val + " y su FE es: " + nodo.FE);
-                if (nodo.izq != null) queue.add(nodo.izq);
-                if (nodo.der != null) queue.add(nodo.der);
-            }
-        }
-    }
-
     public void addVAVL_Node(AVL_Node nodoNuevo) {
         if (this.raiz == null) {
             this.raiz = nodoNuevo;
@@ -77,7 +64,7 @@ public class AVL_Tree {
         }
         return raiz;
     }
-
+    
     private AVL_Node rotacionIzq(AVL_Node raiz) {
         AVL_Node hijoder = raiz.der;
         raiz.der = hijoder.izq;
@@ -88,6 +75,8 @@ public class AVL_Tree {
         return hijoder;
     }
 
+    
+    
     private AVL_Node rotacionDer(AVL_Node raiz) {
         AVL_Node hijoizq = raiz.izq;
         raiz.izq = hijoizq.der;
@@ -98,10 +87,77 @@ public class AVL_Tree {
         return hijoizq;
     }
 
+    public void eliminar(int val) {
+    BooleanMayor eliminado = new BooleanMayor(false);
+    this.raiz = eliminarNodo(this.raiz, val, eliminado);
+    }
+
+    private AVL_Node eliminarNodo(AVL_Node raiz, int val, BooleanMayor eliminado) {
+    if (raiz == null){
+        System.out.println("El valor no se encuentra en el arbol");
+        return null;
+    }
+
+    if (val < raiz.val) {
+        raiz.izq = eliminarNodo(raiz.izq, val, eliminado);
+        if (eliminado.value) {
+            raiz.FE++;
+            raiz = balancear(raiz, eliminado);
+        }
+    } else if (val > raiz.val) {
+        raiz.der = eliminarNodo(raiz.der, val, eliminado);
+        if (eliminado.value) {
+            raiz.FE--;
+            raiz = balancear(raiz, eliminado);
+        }
+    } else {
+        // Nodo encontrado
+        eliminado.value = true;
+        if (raiz.izq == null || raiz.der == null) {
+            // Caso de uno o cero hijos
+            if (raiz.izq != null) {
+                raiz = raiz.izq;
+            } else {
+                raiz = raiz.der;
+            }
+        } else {
+            // Nodo con dos hijos: obtenemos el sucesor en el subárbol derecho
+            AVL_Node sucesor = obtenerMin(raiz.der);
+            raiz.val = sucesor.val;
+            raiz.der = eliminarNodo(raiz.der, sucesor.val, eliminado);
+            if (eliminado.value) {
+                raiz.FE--;
+                raiz = balancear(raiz, eliminado);
+            }
+        }
+    }
+    return raiz;
+    }
+
+    private AVL_Node obtenerMin(AVL_Node nodo) {
+        while (nodo.izq != null) {
+            nodo = nodo.izq;
+        }
+        return nodo;
+    }
+    
     private class BooleanMayor {
         boolean value;
         BooleanMayor(boolean value) {
             this.value = value;
+        }
+    }
+
+    public void BFS() {
+        Queue<AVL_Node> queue = new LinkedList<>();
+        if (this.raiz != null) {
+            queue.add(this.raiz);
+            while (!queue.isEmpty()) {
+                AVL_Node nodo = queue.poll();
+                System.out.println(nodo.val + " y su FE es: " + nodo.FE);
+                if (nodo.izq != null) queue.add(nodo.izq);
+                if (nodo.der != null) queue.add(nodo.der);
+            }
         }
     }
 }
