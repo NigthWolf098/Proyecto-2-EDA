@@ -133,7 +133,26 @@ public class AVL_Tree {
     }
     return raiz;
     }
-
+    
+    public boolean busqueda (int val){
+        AVL_Node r = this.raiz;
+	Queue<AVL_Node> queue = new LinkedList();
+	if(r!=null){
+            queue.add(r);
+            while(!queue.isEmpty()){
+                r = (AVL_Node)queue.poll();
+		if(val == r.val){
+                    return true;
+                }             
+		if(r.izq!=null)
+                    queue.add(r.izq);
+		if(r.der!=null)
+		queue.add(r.der);
+            }
+	}
+        return false;
+    }
+    
     private AVL_Node obtenerMin(AVL_Node nodo) {
         while (nodo.izq != null) {
             nodo = nodo.izq;
